@@ -4,49 +4,45 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 
-public static class LogManager
+namespace Zikaron.Managers
 {
-    private const string FileName = "Log.log";
-    public static void Log(string str, EnumLog enumLog = EnumLog.DEBUG, [CallerFilePath] string className = "",[CallerMemberName] string functionName = "")
+    public static class LogManager
     {
-        StringBuilder output = new StringBuilder();
-        output.Append("[");
-        output.Append(DateTime.UtcNow);
-        output.Append(" (UTC)] - [");
-        output.Append(enumLog);
-        output.Append("] - [");
-        output.Append(className.Substring(className.LastIndexOf("Scripts\\") + "Scripts\\".Length));
-        output.Append("] - [");        
-        output.Append(functionName);
-        output.Append("]:\t");
-        output.Append(str);
-        output.Append(Environment.NewLine);
-        if (GameManager.Instance.settings == null || GameManager.Instance.settings.ShowDebug)
+        private const string FileName = "Log.log";
+        public static void Log(string str, LogType enumLog = LogType.Log, [CallerFilePath] string className = "", [CallerMemberName] string functionName = "")
         {
-            switch (enumLog)
+            StringBuilder output = new StringBuilder();
+            output.Append("[");
+            output.Append(DateTime.UtcNow);
+            output.Append(" (UTC)] - [");
+            output.Append(enumLog);
+            output.Append("] - [");
+            output.Append(className.Substring(className.LastIndexOf("Scripts\\") + "Scripts\\".Length));
+            output.Append("] - [");
+            output.Append(functionName);
+            output.Append("]:\t");
+            output.Append(str);
+            output.Append(Environment.NewLine);
+            if (GameManager.Instance.settings == null || GameManager.Instance.settings.ShowDebug)
             {
-                case EnumLog.WARNING:
-                    Debug.LogWarning(output.ToString());
-                    break;
-                case EnumLog.ERROR:
-                    Debug.LogError(output.ToString());
-                    break;
-                case EnumLog.DEBUG:
-                default:
-                    Debug.Log(output.ToString());
-                    break;
+                switch (enumLog)
+                {
+                    case LogType.Warning:
+                        Debug.LogWarning(output.ToString());
+                        break;
+                    case LogType.Error:
+                        Debug.LogError(output.ToString());
+                        break;
+                    case LogType.Log:
+                    default:
+                        Debug.Log(output.ToString());
+                        break;
+                }
+            }
+            if (GameManager.Instance.settings == null || GameManager.Instance.settings.SaveDebug)
+            {
+                File.AppendAllText($"{Application.dataPath}/{FileName}", output.ToString());
             }
         }
-        if (GameManager.Instance.settings == null || GameManager.Instance.settings.SaveDebug)
-        {
-            File.AppendAllText($"{Application.dataPath}/{FileName}", output.ToString());
-        }
     }
-}
-
-public enum EnumLog
-{
-    DEBUG,
-    WARNING,
-    ERROR
 }

@@ -1,13 +1,16 @@
 ﻿using System;
 
-[Serializable]
-public class Settings
+namespace Zikaron.Managers
 {
-    public bool ShowDebug = false;
-    public bool SaveDebug = false;
-
-    public override string ToString()
+    [Serializable]
+    public class Settings
     {
-        return $"ShowDebug:{ShowDebug} | SaveDebug:{SaveDebug}";
+        public bool ShowDebug = false;
+        public bool SaveDebug = false;
+
+        public override string ToString()
+        {
+            return $"ShowDebug:{ShowDebug} | SaveDebug:{SaveDebug}";
+        }
     }
 }

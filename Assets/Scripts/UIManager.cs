@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zikaron.Data;
 
-public class UIManager : MonoBehaviour
+namespace Zikaron.Managers
 {
-    // Start is called before the first frame update
-    void Start()
+    public class UIManager : MonoBehaviour
     {
-        
-    }
+        [SerializeField] Transform GameBoard = null;
+        [SerializeField] GameObject CardPrefab = null;
+        private List<GameObject> cards = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        internal void MakeCard(Card c)
+        {
+            cards.Add(Instantiate())
+        }
     }
 }
